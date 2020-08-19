@@ -1,3 +1,8 @@
 textarea {
     min-height: 400px;
+    white-space: pre-wrap;
+}
+.email-body
+{
+    white-space: pre-wrap;
 }

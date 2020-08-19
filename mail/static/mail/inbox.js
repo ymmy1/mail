@@ -60,15 +60,16 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-      // Print emails
+      // Creating Table of email list
       table = document.querySelector('#inbox_table');
-      table.innerHTML = "<tr><th>ID</th><th>Sender</th><th>Subject</th><th>Body</th><th>Time</th></tr>";
+      table.innerHTML = "<tr><th>•</th><th>ID</th><th>Sender</th><th>Subject</th><th>Body</th><th>Time</th><th>∞</th></tr>";
       if(mailbox == "sent")
       {
-        table.innerHTML = "<tr><th>ID</th><th>Recipients</th><th>Subject</th><th>Body</th><th>Time</th></tr>";
+        table.innerHTML = "<tr><th>•</th><th>ID</th><th>Recipients</th><th>Subject</th><th>Body</th><th>Time</th><th>∞</th></tr>";
       }
       if (emails.length == 0)
       {
+        // Empty Inbox
         table = document.querySelector('#emails-view');
         p = document.createElement("p");
         p.innerHTML = "Inbox is Empty"
@@ -78,35 +79,147 @@ function load_mailbox(mailbox) {
       {
         for (i = 0; i < emails.length; i++)
         {
+          
           tr = document.createElement("tr");
           tr.setAttribute('data-page', emails[i].id);
           tr.setAttribute('class', 'email-link');
+          button = document.createElement("button");
+          button.setAttribute('class', 'btn btn-primary');
+          button.setAttribute('id', 'reply');
+          button.innerHTML="Reply"
+          // Clicking on email
           tr.addEventListener('click', function() {
+            fetch(`/emails/${this.dataset.page}`, {
+              //Marking email read
+              method: 'PUT',
+              body: JSON.stringify
+              ({
+                  read: true
+              })
+            })
+            // Creating email look
             fetch(`/emails/${this.dataset.page}`)
-              .then(response => response.json())
-              .then(email => {
-                var main = document.querySelector('#emails-view')
-                main.innerHTML = `
-                <div>
-                    <h4 class="email-title">${email.subject}</h4>
-                    <p class="email-from">From: ${email.sender}</p>
-                    <p class="email-from">To: ${email.recipients}</p>
-                    <p class="email-time">${email.timestamp}</p>
-                    <p class="email-body">${email.body}</p>
-                </div>
-                `
+            .then(response => response.json())
+            .then(email => {
+              var main = document.querySelector('#emails-view')
+              main.innerHTML = `
+              <div>
+                  <h4 class="email-subject">${email.subject}</h4>
+                  <span>From: <p class="email-from">${email.sender}</p></span>
+                  <span>To: <p class="email-to">${email.recipients}</p></span>
+                  <p class="email-time">${email.timestamp}</p>
+                  <p class="email-body">${email.body}</p>
+              </div>
+              `;
+              button.setAttribute('data-page', this.dataset.page);
+              // Adding Reply Button
+              main.appendChild(button);
+
+              // Adding Archive Button
+              button = document.createElement("button");
+              button.setAttribute('class', 'btn btn-danger');
+              button.setAttribute('id', 'archive');
+              button.setAttribute('data-page', this.dataset.page);
+              button.innerHTML="Archive"
+              main.appendChild(button);
+
+              // Adding Make Unread Button
+              button = document.createElement("button");
+              button.setAttribute('class', 'btn btn-success');
+              button.setAttribute('data-page', this.dataset.page);
+              button.setAttribute('id', 'unread');
+              button.innerHTML="Mark Unread"
+              main.appendChild(button);
+
+              // Clicking Reply
+              document.querySelector('#reply').addEventListener('click', function() {
+                document.querySelector('#reply').style.display = 'none'
+                form = document.createElement('form')
+                form.setAttribute('id', 'reply-form')
+                textarea = document.createElement('textarea')
+                textarea.value = `
+
+------ On ${email.timestamp} ${email.sender} wrote:
+
+    ${email.body}
+`
+                submit = document.createElement('input')
+                submit.setAttribute('type', 'Submit')
+                form.appendChild(textarea)
+                form.appendChild(submit)
+                main.appendChild(form)
+                document.querySelector('textarea').focus()
+                document.querySelector('textarea').setSelectionRange(0,0);
+                document.querySelector('#reply-form').onsubmit = (e) => { 
+
+                  e.preventDefault();
+                  console.log(mailbox)
+                  if (mailbox == 'inbox')
+                  {
+                    recipients = document.querySelector('.email-from').innerHTML
+                  }
+                  if (mailbox == 'sent')
+                  {
+                    recipients = document.querySelector('.email-to').innerHTML
+                  }
+                  fetch('/emails', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                      recipients: recipients,
+                      subject: `RE: ${document.querySelector('.email-subject').innerHTML}`,
+                      body: document.querySelector('textarea').value
+                    })
+                  })
+                  .then(response => response.json())
+                  .then(result => {
+                      // Print result
+                      console.log(result)
+                      alert(result['message'])
+                      load_mailbox('inbox')
+                  });
+                }
               });
+               // Clicking Archive
+               document.querySelector('#archive').addEventListener('click', function() {
+                fetch(`/emails/${this.dataset.page}`, {
+                  //Marking email archive
+                  method: 'PUT',
+                  body: JSON.stringify
+                  ({
+                      archived: true
+                  })
+                })
+                load_mailbox('inbox')
+              })
+               // Clicking Make Unread
+               document.querySelector('#unread').addEventListener('click', function() {
+                fetch(`/emails/${this.dataset.page}`, {
+                  //Marking email read
+                  method: 'PUT',
+                  body: JSON.stringify
+                  ({
+                      read: false
+                  })
+                })
+                // Giving some time to mark it unread before returning to main page
+                setTimeout(function(){ 
+
+                  load_mailbox('inbox')
+              }, 10);  
+                
+              })
+            });
           });
           if(mailbox == "sent")
           {
-            tr.innerHTML = `<td> ${emails[i].id} </td><td> ${emails[i].recipients} </td><td> ${emails[i].subject} </td><td> ${emails[i].body} </td><td> ${emails[i].timestamp} </td>`
+            tr.innerHTML = `<td> ${emails[i].read} </td><td> ${emails[i].id} </td><td> ${emails[i].recipients} </td><td> ${emails[i].subject} </td><td> ${emails[i].body} </td><td> ${emails[i].timestamp} </td><td> ${emails[i].archived} </td>`
           }
           else
           {
-            tr.innerHTML = `<td> ${emails[i].id} </td><td> ${emails[i].sender} </td><td> ${emails[i].subject} </td><td> ${emails[i].body} </td><td> ${emails[i].timestamp} </td>`
+            tr.innerHTML = `<td> ${emails[i].read} </td><td> ${emails[i].id} </td><td> ${emails[i].sender} </td><td> ${emails[i].subject} </td><td> ${emails[i].body} </td><td> ${emails[i].timestamp} </td><td> ${emails[i].archived} </td>`
           }
           table.appendChild(tr);
         }
       }
-  });
+    });
 }
