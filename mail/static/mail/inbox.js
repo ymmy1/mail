@@ -118,9 +118,19 @@ function load_mailbox(mailbox) {
               // Adding Archive Button
               button = document.createElement("button");
               button.setAttribute('class', 'btn btn-danger');
-              button.setAttribute('id', 'archive');
               button.setAttribute('data-page', this.dataset.page);
-              button.innerHTML="Archive"
+              if (!email.archived)
+              {
+                button.setAttribute('id', 'archive');
+                button.innerHTML="Archive"
+              }
+              else
+              {
+                button.setAttribute('id', 'unarchive');
+                button.innerHTML="Unarchive"
+              }
+
+              
               main.appendChild(button);
 
               // Adding Make Unread Button
@@ -179,7 +189,28 @@ function load_mailbox(mailbox) {
                   });
                 }
               });
-               // Clicking Archive
+              if(mailbox == 'archive')
+              {
+                // Clicking Unarchive
+              document.querySelector('#unarchive').addEventListener('click', function() {
+                fetch(`/emails/${this.dataset.page}`, {
+                  //Marking email unarchive
+                  method: 'PUT',
+                  body: JSON.stringify
+                  ({
+                      archived: false
+                  })
+                })
+                // Giving some time to mark it unread before returning to main page
+                setTimeout(function(){ 
+
+                  load_mailbox('inbox')
+              }, 50);
+              });
+              }
+              else
+              {
+                // Clicking Archive
                document.querySelector('#archive').addEventListener('click', function() {
                 fetch(`/emails/${this.dataset.page}`, {
                   //Marking email archive
@@ -189,8 +220,14 @@ function load_mailbox(mailbox) {
                       archived: true
                   })
                 })
-                load_mailbox('inbox')
-              })
+                // Giving some time to mark it unread before returning to main page
+                setTimeout(function(){ 
+
+                  load_mailbox('inbox')
+              }, 50);
+                });
+              }
+              
                // Clicking Make Unread
                document.querySelector('#unread').addEventListener('click', function() {
                 fetch(`/emails/${this.dataset.page}`, {
@@ -205,7 +242,7 @@ function load_mailbox(mailbox) {
                 setTimeout(function(){ 
 
                   load_mailbox('inbox')
-              }, 10);  
+              }, 50);  
                 
               })
             });
