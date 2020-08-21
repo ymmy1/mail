@@ -11,9 +11,15 @@
         {% endblock %}
     </head>
     <body>
+        <div class="overlay"></div>
+        
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+            <source src="{% static 'mail/img/bg.mp4' %}" type="video/mp4">
+        </video>
+
         <div class="container">
-            {% block body %}
-            {% endblock %}
+        {% block body %}
+        {% endblock %}
         </div>
     </body>
 </html>
