@@ -158,8 +158,11 @@ function load_mailbox(mailbox) {
                 form.appendChild(textarea)
                 form.appendChild(submit)
                 main.appendChild(form)
-                document.querySelector('textarea').focus()
+                document.querySelector('textarea').focus();
                 document.querySelector('textarea').setSelectionRange(0,0);
+                
+                document.querySelector('textarea').scrollTop = 0;
+                
                 document.querySelector('#reply-form').onsubmit = (e) => { 
 
                   e.preventDefault();
