@@ -1,3 +1,8 @@
+*
+{
+    box-sizing: border-box;
+}
+
 body
 {
     position: relative;
@@ -38,21 +43,77 @@ body
         z-index: 2;
         height: 100vh;
         display: flex;
-        .login_register
+        .login_register, .index
         {
-            
-            background: white;
+            // margin-bottom: 20%;   
+            background: #f3f3f3;
             text-align: center;
             border: 4px solid grey;
             border-radius: 20px;
             padding: 20px;
             width: 500px;
-            margin: auto auto;
+            margin: 5% auto auto auto;
+        }
+        .index
+        {
+            width: 100%;
+            height: 90vh;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            /* scroll bar */
+            &::-webkit-scrollbar 
+            {
+                width: 0px;
+            }
+            .body
+            {
+                #emails-view
+                {
+                    #main
+                    {
+                        #inbox_table
+                        {
+                            width:100%;
+                            table-layout:fixed;
+                            tr 
+                            { 
+                                height:2.5em;
+                                cursor: pointer;
+                                td 
+                                {
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                    padding: 0 1%;
+                                    .fa-circle
+                                    {
+                                        font-weight: bold;
+                                        color: blue;
+                                    }
+                                }
+                                .archive_bin, .unarchive_bin
+                                {
+                                    font-weight: bold;
+                                    color: darkred;
+                                }
+                                &:hover
+                                {
+                                    background: lightgrey;
+                                }
+                            }
+                            .unread
+                            {
+                                background: white;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
-    
-    
 }
+
+
 
 textarea
 {

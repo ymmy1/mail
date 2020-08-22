@@ -1,3 +1,8 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
 body {
   position: relative;
   background-color: black;
@@ -40,14 +45,61 @@ body .container {
   display: flex;
 }
 
-body .container .login_register {
-  background: white;
+body .container .login_register, body .container .index {
+  background: #f3f3f3;
   text-align: center;
   border: 4px solid grey;
   border-radius: 20px;
   padding: 20px;
   width: 500px;
-  margin: auto auto;
+  margin: 5% auto auto auto;
+}
+
+body .container .index {
+  width: 100%;
+  height: 90vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* scroll bar */
+}
+
+body .container .index::-webkit-scrollbar {
+  width: 0px;
+}
+
+body .container .index .body #emails-view #main #inbox_table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+body .container .index .body #emails-view #main #inbox_table tr {
+  height: 2.5em;
+  cursor: pointer;
+}
+
+body .container .index .body #emails-view #main #inbox_table tr td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 1%;
+}
+
+body .container .index .body #emails-view #main #inbox_table tr td .fa-circle {
+  font-weight: bold;
+  color: blue;
+}
+
+body .container .index .body #emails-view #main #inbox_table tr .archive_bin, body .container .index .body #emails-view #main #inbox_table tr .unarchive_bin {
+  font-weight: bold;
+  color: darkred;
+}
+
+body .container .index .body #emails-view #main #inbox_table tr:hover {
+  background: lightgrey;
+}
+
+body .container .index .body #emails-view #main #inbox_table .unread {
+  background: white;
 }
 
 textarea {
