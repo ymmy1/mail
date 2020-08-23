@@ -73,18 +73,20 @@ body
                     {
                         #inbox_table
                         {
+                            border: 1px solid #e1e1e1;
                             width:100%;
                             table-layout:fixed;
                             tr 
-                            { 
+                            {
+                                border-bottom: 1px solid  #e1e1e1; 
                                 height:2.5em;
                                 cursor: pointer;
                                 td 
                                 {
+                                    
                                     overflow: hidden;
                                     text-overflow: ellipsis;
                                     white-space: nowrap;
-                                    padding: 0 1%;
                                     .fa-circle
                                     {
                                         font-weight: bold;
@@ -104,6 +106,25 @@ body
                             .unread
                             {
                                 background: white;
+                            }
+                            tbody
+                            {
+                                border-bottom: 1px solid  #e1e1e1;
+                                tr
+                                {
+                                    th:first-child, th:last-child
+                                    {
+                                        width: 50px;
+                                    }
+                                    th:nth-child(2) 
+                                    {
+                                        width: 15%;
+                                    }
+                                    th:nth-child(4) 
+                                    {
+                                        width: 30%;
+                                    }
+                                }
                             }
                         }
                     }

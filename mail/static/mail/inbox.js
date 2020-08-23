@@ -72,7 +72,7 @@ function load_mailbox(mailbox) {
         // Empty Inbox
         table = document.querySelector('#emails-view');
         p = document.createElement("p");
-        p.innerHTML = "Inbox is Empty"
+        p.innerHTML = `${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)} is Empty`
         table.appendChild(p);
       }
       else

@@ -68,11 +68,13 @@ body .container .index::-webkit-scrollbar {
 }
 
 body .container .index .body #emails-view #main #inbox_table {
+  border: 1px solid #e1e1e1;
   width: 100%;
   table-layout: fixed;
 }
 
 body .container .index .body #emails-view #main #inbox_table tr {
+  border-bottom: 1px solid  #e1e1e1;
   height: 2.5em;
   cursor: pointer;
 }
@@ -81,7 +83,6 @@ body .container .index .body #emails-view #main #inbox_table tr td {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 0 1%;
 }
 
 body .container .index .body #emails-view #main #inbox_table tr td .fa-circle {
@@ -100,6 +101,22 @@ body .container .index .body #emails-view #main #inbox_table tr:hover {
 
 body .container .index .body #emails-view #main #inbox_table .unread {
   background: white;
+}
+
+body .container .index .body #emails-view #main #inbox_table tbody {
+  border-bottom: 1px solid  #e1e1e1;
+}
+
+body .container .index .body #emails-view #main #inbox_table tbody tr th:first-child, body .container .index .body #emails-view #main #inbox_table tbody tr th:last-child {
+  width: 50px;
+}
+
+body .container .index .body #emails-view #main #inbox_table tbody tr th:nth-child(2) {
+  width: 15%;
+}
+
+body .container .index .body #emails-view #main #inbox_table tbody tr th:nth-child(4) {
+  width: 30%;
 }
 
 textarea {
