@@ -83,32 +83,28 @@ function load_mailbox(mailbox) {
           tr = document.createElement("tr");
           tr.setAttribute('data-page', emails[i].id);
           // tr.setAttribute('class', 'email-link');
-          button = document.createElement("button");
-          button.setAttribute('class', 'btn btn-primary');
-          button.setAttribute('id', 'reply');
-          button.innerHTML="Reply"
           
           if(mailbox == "sent")
           {
-            tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link">  </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].recipients} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="archive_bin"> <i class="fa fa-trash" aria-hidden="true"></i> </td>`
+            tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link">  </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].recipients} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="archive_bin alt"> <i class="fa fa-trash" aria-hidden="true"></i><span class="alttext">Archive</span> </td>`
           }
           if(mailbox == "archive")
           {
             if(emails[i].read)
             {
-              tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link">  </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].sender} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="unarchive_bin"> <i class="fa fa-trash-o" aria-hidden="true"></i> </td>`
+              tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link">  </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].sender} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="unarchive_bin alt"> <i class="fa fa-undo" aria-hidden="true"></i><span class="alttext">Unarchive</span> </td>`
             }
             else
             {
               tr.setAttribute('class', 'unread');
-              tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link"> <i class="fa fa-circle" aria-hidden="true"></i> </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].sender} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="unarchive_bin"> <i class="fa fa-trash-o" aria-hidden="true"></i> </td>`              
+              tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link"> <i class="fa fa-circle" aria-hidden="true"></i> </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].sender} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="unarchive_bin alt"> <i class="fa fa-undo" aria-hidden="true"></i><span class="alttext">Unarchive</span> </td>`
             }
           }
           else
           {
             if(emails[i].read)
             {
-              tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link">  </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].sender} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="archive_bin"> <i class="fa fa-trash" aria-hidden="true"></i> </td>`
+              tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link">  </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].sender} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="archive_bin alt"> <i class="fa fa-trash" aria-hidden="true"></i><span class="alttext">Archive</span> </td>`
             }
             else
             {
@@ -176,70 +172,99 @@ function load_mailbox(mailbox) {
               .then(email => {
                 var main = document.querySelector('#emails-view')
                 main.innerHTML = `
-                <div>
-                    <h4 class="email-subject">${email.subject}</h4>
-                    <span>From: <p class="email-from">${email.sender}</p></span>
-                    <span>To: <p class="email-to">${email.recipients}</p></span>
-                    <p class="email-time">${email.timestamp}</p>
+                <div class="email-view">
+                    <span id="icon_span"><h4 class="email-subject">${email.subject}</h4><p class="email-time">${email.timestamp}</p></span>
+                    <span>From: <p class="email-from"> ${email.sender}</p></span>
+                    <span>To: <p class="email-to"> ${email.recipients}</p></span>
                     <p class="email-body">${email.body}</p>
                 </div>
-                `;
-                button.setAttribute('data-page', link.dataset.page);
-                // Adding Reply Button
-                main.appendChild(button);
-
-                // Adding Archive Button
-                button = document.createElement("button");
-                button.setAttribute('class', 'btn btn-danger');
-                button.setAttribute('data-page', link.dataset.page);
-                if (!email.archived)
-                {
-                  button.setAttribute('id', 'archive');
-                  button.innerHTML="Archive"
-                }
-                else
-                {
-                  button.setAttribute('id', 'unarchive');
-                  button.innerHTML="Unarchive"
-                }
-
-                
-                main.appendChild(button);
-
-                // Adding Make Unread Button
-                button = document.createElement("button");
-                button.setAttribute('class', 'btn btn-success');
-                button.setAttribute('data-page', link.dataset.page);
-                button.setAttribute('id', 'unread');
-                button.innerHTML="Mark Unread"
-                main.appendChild(button);
-
-                // Clicking Reply
-                document.querySelector('#reply').addEventListener('click', function() {
-                  document.querySelector('#reply').style.display = 'none'
-                  form = document.createElement('form')
-                  form.setAttribute('id', 'reply-form')
-                  textarea = document.createElement('textarea')
-                  textarea.value = `
+                <div style="display: none;" class="reply-form">
+                  <form id="reply-form">
+                    <textarea>
+                    
 
     ------ On ${email.timestamp} ${email.sender} wrote:
 
-      ${email.body}
-    `
-                  submit = document.createElement('input')
-                  submit.setAttribute('type', 'Submit')
-                  form.appendChild(textarea)
-                  form.appendChild(submit)
-                  main.appendChild(form)
+    ${email.body}
+  
+                    </textarea>
+                    <input type="Submit">
+                  </form>
+                </div>
+                `;
+
+                // Adding Reply button
+                button = document.createElement("button");
+                button.setAttribute('class', 'btn btn-primary alt');
+                button.setAttribute('id', 'reply');
+                button.innerHTML=`<i class="fa fa-reply" aria-hidden="true"></i>`
+                button.setAttribute('data-page', link.dataset.page);
+
+                tooltip = document.createElement("span")
+                tooltip.setAttribute('class', 'alttext')
+                tooltip.innerHTML = 'Reply'
+                
+                // Adding Archive Button
+                button2 = document.createElement("button");
+                button2.setAttribute('class', 'btn btn-danger alt');
+                button2.setAttribute('data-page', link.dataset.page);
+
+                tooltip = document.createElement("span")
+                tooltip.setAttribute('class', 'alttext')
+                if (!email.archived)
+                {
+                  tooltip.innerHTML = 'Archive'
+                  button2.setAttribute('id', 'archive');
+                  button2.innerHTML=`<i class="fa fa-trash" aria-hidden="true"></i>`
+                }
+                else
+                {
+                  tooltip.innerHTML = 'Unarchive'
+                  button2.setAttribute('id', 'unarchive');
+                  button2.innerHTML=`<i class="fa fa-undo" aria-hidden="true"></i>`
+                }
+                button2.appendChild(tooltip)
+                span = document.querySelector('#icon_span')
+                div = document.createElement('div')
+                div.setAttribute('class', 'icon-div')
+
+                // Adding Make Unread Button
+                button3 = document.createElement("button");
+                button3.setAttribute('class', 'btn btn-success alt');
+                button2.setAttribute('data-page', link.dataset.page);
+                button3.setAttribute('id', 'unread');
+                button3.innerHTML=`<i class="fa fa-envelope" aria-hidden="true"></i>`
+
+                tooltip = document.createElement("span")
+                tooltip.setAttribute('class', 'alttext')
+                tooltip.innerHTML="Mark Unread"
+                button3.appendChild(tooltip)
+
+                // Order Reply & Mark UNread & Archive
+                div.appendChild(button);
+                div.appendChild(button3);
+                div.appendChild(button2);
+                span.appendChild(div);
+
+                // Clicking Reply
+                document.querySelector('#reply').addEventListener('click', function() {
+                  reply = document.querySelector('.reply-form')
+
+                  if(reply.style.display === 'none')
+                  {
+                    reply.style.display = 'block';
+                  }
+                  else
+                  {
+                    reply.style.display = 'none';
+                  }
                   document.querySelector('textarea').focus();
                   document.querySelector('textarea').setSelectionRange(0,0);
-                  
                   document.querySelector('textarea').scrollTop = 0;
                   
                   document.querySelector('#reply-form').onsubmit = (e) => { 
 
                     e.preventDefault();
-                    console.log(mailbox)
                     if (mailbox == 'inbox')
                     {
                       recipients = document.querySelector('.email-from').innerHTML
@@ -265,6 +290,8 @@ function load_mailbox(mailbox) {
                     });
                   }
                 });
+
+                
                 if(mailbox == 'archive')
                 {
                   // Clicking Unarchive

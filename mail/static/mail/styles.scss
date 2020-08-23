@@ -78,6 +78,7 @@ body
                             table-layout:fixed;
                             tr 
                             {
+                                position: relative;
                                 border-bottom: 1px solid  #e1e1e1; 
                                 height:2.5em;
                                 cursor: pointer;
@@ -90,13 +91,18 @@ body
                                     .fa-circle
                                     {
                                         font-weight: bold;
-                                        color: blue;
+                                        color: #007BFF;
                                     }
                                 }
                                 .archive_bin, .unarchive_bin
                                 {
+                                    position: static;
                                     font-weight: bold;
-                                    color: darkred;
+                                    color: #DC3545;
+                                    &:hover
+                                    {
+                                        color:darkred
+                                    }
                                 }
                                 &:hover
                                 {
@@ -128,14 +134,115 @@ body
                             }
                         }
                     }
+                    .email-view
+                    {
+                        text-align: left;
+                        span
+                        {
+                            display: flex;
+                            height: 2em;
+                            align-items: baseline;
+                            h4
+                            {
+                                margin: 0;
+                            }
+                            p
+                            {
+                                margin: 0 0 0 5px;
+                                height: inherit;
+                            }
+                            .email-time
+                            {
+                                font-size: 0.7em;
+                            }
+                        }
+                        #icon_span
+                        {
+                            .icon-div
+                            {
+                                margin-left: auto;
+                                margin-right: 5px;
+                                button
+                                {
+                                    margin-right: 5px;
+                                }
+                            }
+                        }
+                        .email-body
+                        {
+                            border: 1px solid #e1e1e1;
+                            padding: 20px 10px;
+                            height: 40vh;
+                            overflow: scroll;
+                            /* scroll bar */
+                            &::-webkit-scrollbar 
+                            {
+                                width: 0px;
+                            }
+
+                        }
+                    }
+                    .reply-form
+                    {
+                        // Set in js file on line 181 as well
+                        display: none;
+                    }
+
+                }
+                #compose-view
+                {
+                    min-width: 300px;
+                    width: 95%;
+                    margin: auto;
+                    #compose-form
+                    {
+                        text-align: left;
+                        
+                        padding: 10px;
+                        textarea
+                        {
+                            height: 35vh;
+                        }
+                        input[type=submit]
+                        {
+                            margin-top: 15px;
+                            width: 100%;
+                        }
+                    }   
                 }
             }
         }
     }
 }
 
+.alt 
+{
+    position: relative;
+    .alttext 
+    {
+        display: block;
+        overflow: visible;
+        opacity: 0;
+        width: max-content;
+        background-color: #e1e1e1;
+        color: #000000;
+        text-align: center;
+        border-radius: 6px;
+        padding: 3px 5px 5px;
+        font-size: 0.75em;
 
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 11;
 
+        // Transition
+        transition: opacity 0.1s linear 1s;
+    }
+    &:hover .alttext
+    {
+        opacity: 1;
+    }
+}
 textarea
 {
     white-space: pre-wrap;
