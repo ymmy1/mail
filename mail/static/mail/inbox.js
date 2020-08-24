@@ -86,7 +86,7 @@ function load_mailbox(mailbox) {
           
           if(mailbox == "sent")
           {
-            tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link">  </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].recipients} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="archive_bin alt"> <i class="fa fa-trash" aria-hidden="true"></i><span class="alttext">Archive</span> </td>`
+            tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link">  </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].recipients} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="email-link"></td>`
           }
           if(mailbox == "archive")
           {
@@ -100,7 +100,7 @@ function load_mailbox(mailbox) {
               tr.innerHTML = `<td data-page="${emails[i].id}"class="email-link"> <i class="fa fa-circle" aria-hidden="true"></i> </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].sender} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].subject} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].body} </td><td data-page="${emails[i].id}"class="email-link"> ${emails[i].timestamp} </td><td data-page="${emails[i].id}"class="unarchive_bin alt"> <i class="fa fa-undo" aria-hidden="true"></i><span class="alttext">Unarchive</span> </td>`
             }
           }
-          else
+          if(mailbox == "inbox")
           {
             if(emails[i].read)
             {
@@ -117,7 +117,6 @@ function load_mailbox(mailbox) {
           // Clicking Archiving Bin
           document.querySelectorAll('.archive_bin').forEach(link => {
             link.onclick = () => {
-              console.log("clicked Archived " + link.dataset.page)
               fetch(`/emails/${link.dataset.page}`, {
                 //Marking email archive
                 method: 'PUT',
@@ -127,17 +126,13 @@ function load_mailbox(mailbox) {
                 })
               })
               // Giving some time to mark it unread before returning to main page
-              setTimeout(function(){ 
-
-                load_mailbox('inbox')
-            }, 50);
+              setTimeout(function(){load_mailbox('inbox')}, 50);
               };
             });
 
             // Clicking Unarchiving Bin
           document.querySelectorAll('.unarchive_bin').forEach(link => {
             link.onclick = () => {
-              console.log("clicked Unarchived " + link.dataset.page)
               fetch(`/emails/${link.dataset.page}`, {
                 //Marking email archive
                 method: 'PUT',
@@ -147,10 +142,7 @@ function load_mailbox(mailbox) {
                 })
               })
               // Giving some time to mark it unread before returning to main page
-              setTimeout(function(){ 
-
-                load_mailbox('archive')
-            }, 50);
+              setTimeout(function(){load_mailbox('archive')}, 50);
               };
             });
 
@@ -181,14 +173,14 @@ function load_mailbox(mailbox) {
                 <div style="display: none;" class="reply-form">
                   <form id="reply-form">
                     <textarea>
-                    
+
 
     ------ On ${email.timestamp} ${email.sender} wrote:
 
     ${email.body}
   
                     </textarea>
-                    <input type="Submit">
+                    <input class="btn btn-primary" type="Submit" Value="Reply">
                   </form>
                 </div>
                 `;
@@ -203,6 +195,7 @@ function load_mailbox(mailbox) {
                 tooltip = document.createElement("span")
                 tooltip.setAttribute('class', 'alttext')
                 tooltip.innerHTML = 'Reply'
+                button.appendChild(tooltip)
                 
                 // Adding Archive Button
                 button2 = document.createElement("button");
@@ -241,9 +234,14 @@ function load_mailbox(mailbox) {
                 button3.appendChild(tooltip)
 
                 // Order Reply & Mark UNread & Archive
+                // 1 = reply. 2 = Archive 3 = Mark Unread
                 div.appendChild(button);
-                div.appendChild(button3);
-                div.appendChild(button2);
+                if(mailbox != 'sent')
+                {
+                  div.appendChild(button2);
+                  div.appendChild(button3);
+                }
+                
                 span.appendChild(div);
 
                 // Clicking Reply
@@ -284,7 +282,6 @@ function load_mailbox(mailbox) {
                     .then(response => response.json())
                     .then(result => {
                         // Print result
-                        console.log(result)
                         alert(result['message'])
                         load_mailbox('inbox')
                     });
@@ -305,49 +302,44 @@ function load_mailbox(mailbox) {
                     })
                   })
                   // Giving some time to mark it unread before returning to main page
-                  setTimeout(function(){ 
-
-                    load_mailbox('inbox')
-                }, 50);
+                  setTimeout(function(){    load_mailbox('inbox')    }, 50);
                 });
                 }
                 else
                 {
                   // Clicking Archive
-                  document.querySelector('#archive').addEventListener('click', function() {
-                  fetch(`/emails/${link.dataset.page}`, {
-                    //Marking email archive
-                    method: 'PUT',
-                    body: JSON.stringify
-                    ({
-                        archived: true
-                    })
-                  })
-                  // Giving some time to mark it unread before returning to main page
-                  setTimeout(function(){ 
-
-                    load_mailbox('inbox')
-                }, 50);
-                  });
+                  if(mailbox != 'sent')
+                  {
+                    document.querySelector('#archive').addEventListener('click', function() {
+                      fetch(`/emails/${link.dataset.page}`, {
+                        //Marking email archive
+                        method: 'PUT',
+                        body: JSON.stringify
+                        ({
+                            archived: true
+                        })
+                      })
+                      // Giving some time to mark it unread before returning to main page
+                      setTimeout(function(){load_mailbox('inbox')}, 50);
+                    });
+                  }
                 }
-                
                   // Clicking Make Unread
-                  document.querySelector('#unread').addEventListener('click', function() {
-                  fetch(`/emails/${link.dataset.page}`, {
-                    //Marking email read
-                    method: 'PUT',
-                    body: JSON.stringify
-                    ({
-                        read: false
+                  if(mailbox != 'sent')
+                  {
+                    document.querySelector('#unread').addEventListener('click', function() {
+                      fetch(`/emails/${link.dataset.page}`, {
+                        //Marking email read
+                        method: 'PUT',
+                        body: JSON.stringify
+                        ({
+                            read: false
+                        })
+                      })
+                      // Giving some time to mark it unread before returning to main page
+                      setTimeout(function(){load_mailbox('inbox')}, 50);  
                     })
-                  })
-                  // Giving some time to mark it unread before returning to main page
-                  setTimeout(function(){ 
-
-                    load_mailbox('inbox')
-                }, 50);  
-                  
-                })
+                  }
               });
             };
           }
