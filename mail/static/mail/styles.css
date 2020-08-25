@@ -230,7 +230,6 @@ body .container .index .body #emails-view .reply-form form input[type=Submit] {
 }
 
 body .container .index .body #compose-view {
-  min-width: 300px;
   width: 95%;
   margin: auto;
 }
@@ -301,12 +300,40 @@ body .container .index .body #compose-view #compose-form input[type=submit] {
     margin-top: 10px;
     width: 100%;
   }
+  body .container .index .body #emails-view #main #inbox_table tbody td:first-child, body .container .index .body #emails-view #main #inbox_table tbody th:first-child, body .container .index .body #emails-view #main #inbox_table tr td:first-child, body .container .index .body #emails-view #main #inbox_table tr th:first-child {
+    display: none;
+  }
+  body .container .index .body #emails-view #main #inbox_table tbody td:nth-child(2), body .container .index .body #emails-view #main #inbox_table tbody th:nth-child(2), body .container .index .body #emails-view #main #inbox_table tr td:nth-child(2), body .container .index .body #emails-view #main #inbox_table tr th:nth-child(2) {
+    padding-left: 10px;
+  }
+  body .container .index .body #emails-view #main #inbox_table tbody td:nth-child(3), body .container .index .body #emails-view #main #inbox_table tbody th:nth-child(3), body .container .index .body #emails-view #main #inbox_table tr td:nth-child(3), body .container .index .body #emails-view #main #inbox_table tr th:nth-child(3) {
+    width: 20%;
+  }
+  body .container .index .body #emails-view #main #inbox_table tbody td:nth-child(4), body .container .index .body #emails-view #main #inbox_table tbody th:nth-child(4), body .container .index .body #emails-view #main #inbox_table tr td:nth-child(4), body .container .index .body #emails-view #main #inbox_table tr th:nth-child(4) {
+    display: none;
+  }
+  body .container .index .body #emails-view #main #inbox_table tbody td:nth-child(5), body .container .index .body #emails-view #main #inbox_table tbody th:nth-child(5), body .container .index .body #emails-view #main #inbox_table tr td:nth-child(5), body .container .index .body #emails-view #main #inbox_table tr th:nth-child(5) {
+    width: 13%;
+  }
+  body .container .index .body #emails-view #main #inbox_table tbody td:nth-child(6), body .container .index .body #emails-view #main #inbox_table tbody th:nth-child(6), body .container .index .body #emails-view #main #inbox_table tr td:nth-child(6), body .container .index .body #emails-view #main #inbox_table tr th:nth-child(6) {
+    width: 25px !important;
+  }
 }
 
 @media only screen and (max-width: 400px) {
+  body .container .index {
+    padding: 20px 10px;
+  }
   body .container .index header h2 {
     font-size: 1.6em;
     margin-bottom: 15px;
+  }
+  body .container .index .body #compose-view {
+    min-width: 0px;
+    width: 100%;
+  }
+  body .container .index .body #compose-view #compose-form {
+    width: inherit;
   }
 }
 /*# sourceMappingURL=styles.css.map */
