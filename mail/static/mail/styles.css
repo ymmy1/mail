@@ -49,6 +49,8 @@ body .container .login_register, body .container .index {
   background: #f3f3f3;
   text-align: center;
   border: 4px solid grey;
+  -webkit-box-shadow: 0 0 10px #fafafa;
+          box-shadow: 0 0 10px #fafafa;
   border-radius: 20px;
   padding: 20px;
   width: 500px;
@@ -334,6 +336,24 @@ body .container .index .body #compose-view #compose-form input[type=submit] {
   }
   body .container .index .body #compose-view #compose-form {
     width: inherit;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  body .container .index .body #emails-view .email-view #icon_span {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+  }
+  body .container .index .body #emails-view .email-view #icon_span .icon-div {
+    margin: 10px 0;
   }
 }
 /*# sourceMappingURL=styles.css.map */

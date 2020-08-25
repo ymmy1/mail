@@ -49,6 +49,7 @@ body
             background: #f3f3f3;
             text-align: center;
             border: 4px solid grey;
+            box-shadow: 0 0 10px #fafafa;
             border-radius: 20px;
             padding: 20px;
             width: 500px;
@@ -421,6 +422,38 @@ body
                     }
                 }
 
+            }
+        }
+    }
+}
+// Email look before 500px
+@media only screen and (max-width: 500px) 
+{
+    body
+    {
+        .container
+        {
+            .index
+            {
+                .body
+                {
+                    #emails-view
+                    {
+                        .email-view
+                        {
+                            #icon_span
+                            {
+                                display: flex;
+                                flex-direction: column-reverse;
+                                height: fit-content;
+                                .icon-div
+                                {
+                                    margin: 10px 0;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
