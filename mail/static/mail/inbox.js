@@ -36,7 +36,7 @@ function compose_email() {
     .then(result => {
         // Print result
         alert(result.message)
-        load_mailbox('inbox')
+        load_mailbox('sent')
     });
   }
 }
